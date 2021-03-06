@@ -3,7 +3,7 @@ class Recipe
               :ingredients_required
 
   def initialize(name)
-    @name = name
+    @name                 = name
     @ingredients_required = Hash.new(0)
   end
 
@@ -11,17 +11,15 @@ class Recipe
     @ingredients_required[ingredient] += amount
   end
 
-  def amount_required(ingredient)
-    @ingredients_required[ingredient]
-  end
-
   def ingredients
-    @ingredients_required.keys
+    @ingredients_required.flat_map do |ingredient_required|
+      ingredient_required[0]
+   end
   end
 
   def total_calories
-    ingredients.sum do |ingredient|
-      amount_required(ingredient) * ingredient.calories
+    @ingredients_required.sum do |ingredient, amount|
+      ingredient.calories * amount
     end
   end
 end
